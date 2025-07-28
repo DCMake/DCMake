@@ -1,0 +1,61 @@
+name: Update README Experience Years
+
+on:
+  schedule:
+    # Esegui il 1° gennaio di ogni anno alle 00:00 UTC
+    - cron: '0 0 1 1 *'
+  workflow_dispatch: # Permette esecuzione manuale
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Update README
+      run: |
+        node -e "
+        const fs = require('fs');
+        
+        function calculateYears(startDate) {
+          const start = new Date(startDate);
+          const now = new Date();
+          const diffTime = Math.abs(now - start);
+          const diffYears = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365.25));
+          return diffYears;
+        }
+        
+        let readme = fs.readFileSync('README.md', 'utf8');
+        
+        // Aggiorna Freelance (Jan 2012)
+        const freelanceYears = calculateYears('2012-01-01');
+        readme = readme.replace(/📅 Jan 2012 - Now \| \( \d+ years? \)/, 
+          \`📅 Jan 2012 - Now | ( \${freelanceYears} years )\`);
+        
+        // Aggiorna CTO (Mar 2024)
+        const ctoYears = calculateYears('2024-03-01');
+        readme = readme.replace(/📅 Mar 2024 - Now \| \( \d+ years? \)/, 
+          \`📅 Mar 2024 - Now | ( \${ctoYears} year\${ctoYears !== 1 ? 's' : ''} )\`);
+        
+        // Aggiorna Senior CRM (Oct 2022)
+        const crmYears = calculateYears('2022-10-01');
+        readme = readme.replace(/📅 Oct 2022 - Now \| \( \d+ years? \)/, 
+          \`📅 Oct 2022 - Now | ( \${crmYears} year\${crmYears !== 1 ? 's' : ''} )\`);
+        
+        fs.writeFileSync('README.md', readme);
+        "
+        
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add README.md
+        git diff --quiet && git diff --staged --quiet || git commit -m "Update experience years automatically"
+        git push 
