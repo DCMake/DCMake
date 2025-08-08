@@ -24,7 +24,7 @@
 
 ### Freelance Full Stack Developer
 
-📅 Jan 2012 - Now | ( 12 years )
+📅 Jan 2012 - Now | ( 13 years )
 
 **Industry**: Multi-sector (E-commerce, SaaS, Web Development)
 
@@ -44,7 +44,7 @@ Design, development, and containerization of a full-stack management platform fo
 
 ### Senior CRM Developer
 
-📅 Oct 2022 - Now | ( 2 years )
+📅 Oct 2022 - Now | ( 3 years )
 
 **Industry**: E-learning and training for professionals, teachers and individuals
 
